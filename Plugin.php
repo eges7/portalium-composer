@@ -97,7 +97,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     private function _isUpgrade(PackageEvent $event, UpdateOperation $operation)
     {
-        // Composer 1.7.0+
         if (method_exists('Composer\Package\Version\VersionParser', 'isUpgrade')) {
             return VersionParser::isUpgrade(
                 $operation->getInitialPackage()->getVersion(),
@@ -125,29 +124,22 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $package = $this->_packageUpdates['yiisoft/yii2'];
 
-        // do not show a notice on up/downgrades between dev versions
-        // avoid messages like from version dev-master to dev-master
         if ($package['fromPretty'] == $package['toPretty']) {
             return;
         }
 
         $io = $event->getIO();
 
-        // print the relevant upgrade notes for the upgrade
-        // - only on upgrade, not on downgrade
-        // - only if the "from" version is non-dev, otherwise we have no idea which notes to show
         if ($package['direction'] === 'up' && $this->isNumericVersion($package['fromPretty'])) {
 
             $notes = $this->findUpgradeNotes($packageName, $package['fromPretty']);
             if ($notes !== false && empty($notes)) {
-                // no relevent upgrade notes, do not show anything.
                 return;
             }
 
             $this->printUpgradeIntro($io, $package);
 
             if ($notes) {
-                // safety check: do not display notes if they are too many
                 if (count($notes) > 250) {
                     $io->write("\n  <fg=yellow;options=bold>The relevant notes for your upgrade are too long to be displayed here.</>");
                 } else {
@@ -171,7 +163,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     private function printUpgradeLink($io, $package)
     {
         $maxVersion = $package['direction'] === 'up' ? $package['toPretty'] : $package['fromPretty'];
-        // make sure to always show a valid link, even if $maxVersion is something like dev-master
         if (!$this->isNumericVersion($maxVersion)) {
             $maxVersion = 'master';
         }
@@ -215,7 +206,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $lines = preg_split('~\R~', file_get_contents($upgradeFile));
         $relevantLines = [];
         $consuming = false;
-        // whether an exact match on $fromVersion has been encountered
         $foundExactMatch = false;
         foreach($lines as $line) {
             if (preg_match('/^Upgrade from Yii ([0-9]\.[0-9]+\.?[0-9\.]*)/i', $line, $matches)) {

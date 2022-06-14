@@ -31,15 +31,12 @@ class Installer extends LibraryInstaller
             $this->addPackage($package);
         };
 
-        // install the package the normal composer way
         $promise = parent::install($repo, $package);
 
-        // Composer v2 might return a promise here
         if ($promise instanceof PromiseInterface) {
             return $promise->then($afterInstall);
         }
 
-        // If not, execute the code right away as parent::install executed synchronously (composer v1, or v2 without async)
         $afterInstall();
     }
 
@@ -54,15 +51,12 @@ class Installer extends LibraryInstaller
             $this->addPackage($target);
         };
 
-        // update the package the normal composer way
         $promise = parent::update($repo, $initial, $target);
 
-        // Composer v2 might return a promise here
         if ($promise instanceof PromiseInterface) {
             return $promise->then($afterUpdate);
         }
 
-        // If not, execute the code right away as parent::update executed synchronously (composer v1, or v2 without async)
         $afterUpdate();
     }
 
@@ -72,20 +66,16 @@ class Installer extends LibraryInstaller
     public function uninstall(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         $afterUninstall = function () use ($package) {
-            // remove the package from yiisoft/extensions.php
             $this->removePackage($package);
 
         };
 
-        // uninstall the package the normal composer way
         $promise = parent::uninstall($repo, $package);
 
-        // Composer v2 might return a promise here
         if ($promise instanceof PromiseInterface) {
             return $promise->then($afterUninstall);
         }
 
-        // If not, execute the code right away as parent::uninstall executed synchronously (composer v1, or v2 without async)
         $afterUninstall();
     }
 
@@ -132,8 +122,6 @@ class Installer extends LibraryInstaller
         if (!empty($autoload['psr-4'])) {
             foreach ($autoload['psr-4'] as $name => $path) {
                 if (is_array($path)) {
-                    // ignore psr-4 autoload specifications with multiple search paths
-                    // we can not convert them into aliases as they are ambiguous
                     continue;
                 }
                 $name = str_replace('\\', '/', trim($name, '\\'));
@@ -165,7 +153,6 @@ class Installer extends LibraryInstaller
         if (!is_file($file)) {
             return [];
         }
-        // invalidate opcache of extensions.php if exists
         if (function_exists('opcache_invalidate')) {
             @opcache_invalidate($file, true);
         }
@@ -196,7 +183,6 @@ class Installer extends LibraryInstaller
         }
         $array = str_replace("'<vendor-dir>", '$vendorDir . \'', var_export($extensions, true));
         file_put_contents($file, "<?php\n\n\$vendorDir = dirname(__DIR__);\n\nreturn $array;\n");
-        // invalidate opcache of extensions.php if exists
         if (function_exists('opcache_invalidate')) {
             @opcache_invalidate($file, true);
         }
