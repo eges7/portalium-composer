@@ -1,6 +1,6 @@
 {
     "name": "portalium/portalium-composer",
-    "description": "The composer plugin for Yii extension installer",
+    "description": "Portalium composer",
     "type": "composer-plugin",
     "license": "BSD-3-Clause",
 	"authors" : [
