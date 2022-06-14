@@ -1,2 +1,2 @@
-# portalium-template
-Module Template for Portalium
+# portalium-composer
+Module composer for Portalium

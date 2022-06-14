@@ -1,9 +1,8 @@
 {
-	"name" : "portalium/portalium-template",
-	"description" : "Module Template for Portalium",
-	"type" : "yii2-extension",
-	"license": "MIT",
-	"homepage" : "https://portalium.dev",
+    "name": "portalium/portalium-composer",
+    "description": "The composer plugin for Yii extension installer",
+    "type": "composer-plugin",
+    "license": "BSD-3-Clause",
 	"authors" : [
 		{
 			"name" : "Uğur YILDIZ",
@@ -11,12 +10,26 @@
 			"homepage" : "https://uguryildiz.net"
 		}
 	],
-	"support" : {
-		"issues" : "https://github.com/portalium/portalium-template/issues"
+    "support" : {
+		"issues" : "https://github.com/portalium/portalium-composer/issues"
 	},
-	"autoload" : {
-		"psr-4" : {
-			"portalium\\template\\" : "src/"
-		}
-	}
+    "require": {
+        "composer-plugin-api": "^1.0 | ^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "^1.0 | ^2.0@dev",
+        "phpunit/phpunit": "<7"
+    },
+    "autoload": {
+        "psr-4": { "portalium\\composer\\": "" }
+    },
+    "autoload-dev": {
+        "psr-4": { "tests\\": "tests" }
+    },
+    "extra": {
+        "class": "portalium\\composer\\Plugin",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
 }
