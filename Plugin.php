@@ -1,9 +1,4 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace portalium\composer;
 
@@ -18,12 +13,6 @@ use Composer\Plugin\PluginInterface;
 use Composer\Script;
 use Composer\Script\ScriptEvents;
 
-/**
- * Plugin is the composer plugin that registers the Yii composer installer.
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
- */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
     /**
