@@ -19,7 +19,7 @@ class Installer extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return $packageType === 'portalium-core';
+        return $packageType === 'portalium-core'  || $packageType === 'portalium-theme' || $packageType === 'portalium-module';
     }
 
     /**
