@@ -1,5 +1,5 @@
 <?php
-
+/* Inspired by https://github.com/yiisoft/yii2-composer (@yiisoft)*/
 namespace portalium\composer;
 
 use Composer\Package\PackageInterface;
